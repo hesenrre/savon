@@ -30,6 +30,11 @@ module Savon
       @wsdl.soap_actions
     end
 
+    def operation_parameters(operation_name)
+      raise_missing_wsdl_error! unless @wsdl.document?
+      @wsdl.soap_action_parameters
+    end
+
     def operation(operation_name)
       Operation.create(operation_name, @wsdl, @globals)
     end
