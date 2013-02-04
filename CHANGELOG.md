@@ -1,5 +1,28 @@
 ### master
 
+* Improvement: When mistyping an option name, Savon used to raise a simple `NoMethodError`.
+  This is because regardless of whether you're using the Hash or block syntax to pass global
+  or local options, both are just method calls on some options object.
+
+    ```
+    NoMethodError: undefined method 'wsdk' for #<Savon::GlobalOptions:0x007fed95a55228>
+    ```
+
+  As of this change, Savon now catches those errors and raise a `Savon::UnknownOptionError`
+  with a slightly more helpful error message instead.
+
+    ```
+    Savon::UnknownOptionError:
+       Unknown global option: :wsdk
+    ```
+
+* Improvement: [#385](https://github.com/savonrb/savon/issues/385) Instead of raising an
+  `ArgumentError` when Wasabi can't find any operations in the WSDL. Savon now raises a
+  `Savon::UnknownOperationError`. This might happen when Wasabi fails to parse the WSDL
+  because of imports for example.
+
+### 2.1.0 (2013-02-03)
+
 * Feature: [#372](https://github.com/savonrb/savon/pull/372) added global `ssl_cert_key_password` option.
 
 * Feature: [#361](https://github.com/savonrb/savon/issues/361) added the local `:attributes`
@@ -8,6 +31,8 @@
 * Improvement: [#363](https://github.com/savonrb/savon/issues/363) Savon 2.0 remembers the cookies from
   the last response and passes it to the next request, which is not a proper way to handle cookies.
   I removed this behavior and introduced an easy way to handle cookies manually instead.
+
+* Improvement: [#380](https://github.com/savonrb/savon/pull/380) changed the gemspec to not rely on git.
 
 * Fix: [#378](https://github.com/savonrb/savon/pull/378) use the proxy option for WSDL requests.
 
