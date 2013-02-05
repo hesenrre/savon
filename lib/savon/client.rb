@@ -32,7 +32,7 @@ module Savon
 
     def operation_parameters(operation_name)
       raise_missing_wsdl_error! unless @wsdl.document?
-      @wsdl.soap_action_parameters
+      @wsdl.soap_action_parameters(operation_name)
     end
 
     def operation(operation_name)
